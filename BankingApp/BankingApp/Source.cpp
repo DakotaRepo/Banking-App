@@ -1,6 +1,7 @@
 #include <iostream>
 
 int balance = 1000;
+int cash = 500;
 char selection;
 
 void deposit(int balanceAddition = 0);
@@ -14,13 +15,13 @@ int main() {
 
 	while (selection != 'e' || selection != 'E') {
 
-		std::cout << "Please select an action \n\n[B]alance\n[D]eposit \n[W]ithdraw \n[E]xit \n";
+		std::cout << "\nPlease select an action \n\n[B]alance\n[D]eposit \n[W]ithdraw \n[E]xit \n";
 		std::cin >> selection;
 
 		switch (selection) {
 
 		case 'b': case 'B':
-			std::cout << "Balance is " << balance;
+			std::cout << "\nBalance is " << balance << "\nAdditionally, you have " << cash << " availible to deposit\n";
 			break;
 
 		case 'd': case 'D':
@@ -43,24 +44,49 @@ int main() {
 
 void deposit(int balanceAddition) {
 
-	std::cout << "Please input how much you would like to deposit\n";
+	std::cout << "\nPlease input how much you would like to deposit\n";
 	std::cin >> balanceAddition;
+	
+	if (cash >= balanceAddition) {
 
-	balance = balance + balanceAddition;
+		balance = balance + balanceAddition;
+		cash = cash - balanceAddition;
+		}
+
+	else std::cout << "\nError, you do not have enough cash to deposit\n";
+
+	if (std::cin.fail()) {
+		std::cout << "\nError, you must enter a number\n";
+
+		std::cin.clear();
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		}
+
+	
 
 }
 
 void withdraw(int balanceSubtraction) {
 
-	std::cout << "Balance is \n" << balance;
+	std::cout << "\nBalance is " << balance;
 
-	std::cout << "Please input how much you would like to withdraw\n";
+	std::cout << "\nPlease input how much you would like to withdraw\n";
 	std::cin >> balanceSubtraction;
 
-	if (balanceSubtraction <= balance)
+	if (balanceSubtraction <= balance) {
 		balance = balance - balanceSubtraction;
+		cash = cash + balanceSubtraction;
+		}
 
-	else std::cout << "Error\n";
+	else std::cout << "\nError, you do not have that much in balance\n";
+
+	if (std::cin.fail()) {
+		std::cout << "\nError, you must enter a number\n";
+
+		std::cin.clear();
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+	}
 
 
 }
